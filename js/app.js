@@ -1,14 +1,15 @@
-const STORAGE_MENU = "rafah-menu";
-const STORAGE_SALES = "rafah-sales";
-const UPI_ID = "rafamandhibriyani@upi";
+const STORAGE_MENU = "nila-menu";
+const STORAGE_SALES = "nila-sales";
+const UPI_ID = "rafahmandhi@upi";
+const GST_RATE = 0.00;
 
 const DEFAULT_MENU = [
-  { id: "m1", name: "Chicken Mandhi", price: 280, category: "Mandhi", image: "images/chicken-mandhi.jpg" },
-  { id: "m2", name: "Chicken Biryani", price: 220, category: "Biryani", image: "images/chicken-biryani.jpg" },
-  { id: "m3", name: "Egg Biryani", price: 160, category: "Biryani", image: "images/egg-biryani.jpg" },
-  { id: "m4", name: "Fish Sappadu", price: 250, category: "Meals", image: "images/fish-sappadu.jpg" },
-  { id: "m5", name: "Kalari Kari", price: 240, category: "Curry", image: "images/kalari-kari.jpg" },
-  { id: "m6", name: "Nei Soru", price: 90, category: "Rice", image: "images/nei-soru.jpg" }
+  { id: "m1", name: "Chicken Mandhi ", price: 250, category: "Mandhi", image: "images/chicken-mandhi.jpg" },
+  { id: "m2", name: "Chicken Biryani", price: 130, category: "Biryani", image: "images/chicken-biryani.jpg" },
+  { id: "m3", name: "Egg Biryani", price: 100, category: "Biryani", image: "images/egg-biryani.jpg" },
+  { id: "m4", name: "Fish Sappadu", price: 140, category: "Meals", image: "images/fish-sappadu.jpg" },
+  { id: "m5", name: "Pulav rice + Kalari Kari + chicken 65 + Raita", price: 170, category: "Curry", image: "images/kalari-kari.jpg" },
+  { id: "m6", name: "Nei Soru + chicken Gravy +  65 + Raita ", price: 180, category: "Curry", image: "images/nei-soru.jpg" }
 ];
 
 let menu = load(STORAGE_MENU, DEFAULT_MENU);
@@ -38,7 +39,7 @@ function money(n) {
 function totals() {
   const subtotal = cart.reduce((sum, line) => sum + line.price * line.qty, 0);
   const gst = subtotal * GST_RATE;
-  return { subtotal , total: subtotal};
+  return { subtotal, gst, total: subtotal + gst };
 }
 
 function renderMenu() {
@@ -140,7 +141,7 @@ function requireBill() {
 function payNow() {
   if (!requireBill()) return;
   const t = totals();
-  const note = encodeURIComponent("Nila Mandhi House");
+  const note = encodeURIComponent("RAFAH Mandhi & Briyani");
   const upi = `upi://pay?pa=${UPI_ID}&pn=${note}&am=${t.total.toFixed(2)}&cu=INR`;
   $("payMeta").textContent = `${customerName} · ${money(t.total)}`;
   $("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upi)}`;
@@ -168,7 +169,7 @@ function printBill(afterPay) {
   const t = totals();
   const when = new Date().toLocaleString();
   $("printSheet").innerHTML = `
-    <h2>Nila Mandhi House</h2>
+    <h2>Rafah Mandhi Briyani</h2>
     <p>Mandhi · Biryani · Meals</p>
     <p>Customer: <strong>${customerName || "Guest"}</strong></p>
     <p>${when}</p>
@@ -176,7 +177,7 @@ function printBill(afterPay) {
     ${cart.map((l) => `<p>${l.name} × ${l.qty} — ${money(l.price * l.qty)}</p>`).join("")}
     <hr />
     <p>Subtotal ${money(t.subtotal)}</p>
-    <p>GST 5% ${money(t.gst)}</p>
+    <p>GST 0% ${money(t.gst)}</p>
     <p><strong>Total ${money(t.total)}</strong></p>
     <p>Thank you. Visit again.</p>
   `;

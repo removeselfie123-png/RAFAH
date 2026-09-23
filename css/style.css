@@ -141,6 +141,7 @@ button { cursor: pointer; }
 .dish-body p { color: var(--muted); font-size: 0.82rem; margin: 4px 0 8px; }
 .price { color: var(--leaf); font-weight: 700; }
 
+
 .bill-pane {
   background: #fffaf4;
   border-left: 1px solid var(--line);
