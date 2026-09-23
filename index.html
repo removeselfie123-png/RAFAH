@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAFAH MANDHI & BRIYANI — Billing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">رفح</span>
+      <div>
+        <h1>RAFAH MANDHI & BRIYANI</h1>
+        <p>Mandhi · Biryani · Meals - Restaurant Billing</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost" id="salesBtn" type="button">Monthly sales</button>
+      <button class="ghost" id="manageBtn" type="button">Manage menu</button>
+      <button class="cart-toggle" id="cartToggle" type="button" aria-label="Open cart">
+        Cart <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="menu-pane">
+      <div class="toolbar">
+        <div>
+          <h2>Today's kitchen</h2>
+          <p class="hint">Tap a dish to add it to the bill.</p>
+        </div>
+        <label class="search">
+          <span class="sr-only">Search menu</span>
+          <input id="searchInput" type="search" placeholder="Search dishes..." />
+        </label>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <aside class="bill-pane" id="billPane">
+      <div class="bill-head">
+        <h2>Bill</h2>
+        <button class="icon-close" id="closeCart" type="button" aria-label="Close cart">×</button>
+      </div>
+
+      <div class="customer-row">
+        <label for="customerName">Customer name</label>
+        <div class="name-field">
+          <input id="customerName" type="text" maxlength="40" placeholder="Enter name" autocomplete="name" />
+          <span class="name-tag" id="nameTag" hidden></span>
+        </div>
+      </div>
+
+      <div class="bill-body" id="cartItems"></div>
+
+      <div class="totals">
+        <div><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+        <div class="grand"><span>Total</span><strong id="grandTotal">₹0</strong></div>
+      </div>
+
+      <div class="bill-actions">
+        <button class="primary" id="payBtn" type="button">Pay now</button>
+        <button class="secondary" id="printBtn" type="button">Print bill</button>
+        <button class="danger" id="clearBtn" type="button">Clear cart</button>
+      </div>
+    </aside>
+  </main>
+
+  <div class="overlay" id="overlay" hidden></div>
+
+  <div class="modal" id="payModal" hidden>
+    <div class="modal-card">
+      <h3>Scan to pay</h3>
+      <p class="hint" id="payMeta"></p>
+      <img id="qrImage" alt="UPI payment QR code" />
+      <p class="upi-id">UPI: <code>rafamamndhibriyani@upi</code></p>
+      <div class="modal-actions">
+        <button class="primary" id="markPaidBtn" type="button">Mark as paid</button>
+        <button class="ghost" id="closePayBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="salesModal" hidden>
+    <div class="modal-card wide">
+      <h3>Monthly sales</h3>
+      <div class="month-pick">
+        <label>
+          Month
+          <input type="month" id="salesMonth" />
+        </label>
+      </div>
+      <div class="sales-summary" id="salesSummary"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="salesRows"></tbody>
+        </table>
+      </div>
+      <div class="modal-actions">
+        <button class="ghost" id="closeSalesBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="manageModal" hidden>
+    <div class="modal-card wide">
+      <h3>Manage menu</h3>
+      <form id="menuForm" class="menu-form">
+        <input type="hidden" id="itemId" />
+        <label>Name <input id="itemName" required maxlength="60" /></label>
+        <label>Price (₹) <input id="itemPrice" type="number" min="1" step="1" required /></label>
+        <label>Category <input id="itemCategory" maxlength="40" placeholder="Mandhi, Biryani..." /></label>
+        <label>Image URL or path <input id="itemImage" placeholder="images/dish.jpg" /></label>
+        <div class="form-actions">
+          <button class="primary" type="submit" id="saveItemBtn">Add dish</button>
+          <button class="ghost" type="button" id="resetFormBtn">Reset</button>
+        </div>
+      </form>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dish</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="manageRows"></tbody>
+        </table>
+      </div>
+      <div class="modal-actions">
+        <button class="ghost" id="closeManageBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="print-sheet" id="printSheet" aria-hidden="true"></section>
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
